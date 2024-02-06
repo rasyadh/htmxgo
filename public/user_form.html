@@ -1,0 +1,55 @@
+{{ define "user_form" }}
+
+<!-- Update the user info -->
+<!-- 1. all the fields have name attribute to identify the parameters -->
+<!-- 2. hx-include allow to include element value in this case value of the fields https://htmx.org/attributes/hx-include/ -->
+<!-- 3. hx-indicator works like a loading state indicator of AJAX request https://htmx.org/attributes/hx-indicator/ -->
+<!-- 4. hx-put will issue PUT request with parameters from hx-include https://htmx.org/attributes/hx-put/ -->
+<!-- 5. when requesting HTMX will update indicator accordingly -->
+<!-- ?. Try change put the hx-include to parent div so it will get inherited -->
+<!-- ?. Try change the parent div with form and remove the hx-include in button -->
+<form class="bg-neutral p-3 rounded-lg" hx-target="this" hx-swap="outerHTML">
+  <div class="form-control w-full max-w-xs mb-2">
+    <label class="label">
+      <span class="label-text">Name</span>
+    </label>
+    <input
+      type="text"
+      name="name"
+      placeholder="Type name..."
+      class="input input-bordered w-full"
+      value="{{ .Name }}"
+    />
+  </div>
+  <div class="form-control w-full max-w-xs mb-2">
+    <label class="label">
+      <span class="label-text">Phone</span>
+    </label>
+    <input
+      type="number"
+      name="phone"
+      placeholder="Type phone..."
+      class="input input-bordered w-full"
+      value="{{ .Phone }}"
+    />
+  </div>
+  <div class="form-control w-full max-w-xs mb-2">
+    <label class="label">
+      <span class="label-text">Email</span>
+    </label>
+    <input
+      type="email"
+      name="email"
+      placeholder="Type email..."
+      class="input input-bordered w-full"
+      value="{{ .Email }}"
+    />
+  </div>
+  <button class="btn btn-primary mt-2" hx-put="/api/user"  hx-indicator="#spinner" id="saveForm">
+    Save
+    <span class="loading loading-spinner loading-sm htmx-indicator" id="spinner"></span>
+  </button>
+  <button class="btn btn-secondary mt-2" hx-get="/api/user">Cancel</button>
+</form>
+
+{{ end }}

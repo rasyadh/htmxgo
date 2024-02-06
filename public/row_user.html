@@ -1,0 +1,36 @@
+{{ define "row_user" }}
+
+{{ range .Users }}
+<tr>
+  <th>
+    <label>
+      <!-- 1. hx-on allow to embed inline script based on the event https://htmx.org/attributes/hx-on/ -->
+      <!-- 2. hx-trigger set to be triggered when there is a changes -->
+      <input
+        hx-trigger="change"
+        hx-on:change="alert('trigger onchange of the checkbox element value')"
+        type="checkbox"
+        class="checkbox"
+        {{ if .Active }} checked
+        {{ end }}
+      />
+    </label>
+  </th>
+  <td>{{ .Name }}</td>
+  <td>{{ .Phone }}</td>
+  <td>{{ .Email }}</td>
+</tr>
+{{ end }}
+
+{{ if le .NextPage 5 }}
+<!-- Scroll to do lazy load -->
+<!-- 3. hx-trigger triggered when the element is shown in the viewport -->
+<!-- 4. request the next value, show indicator, and replace this element with the response -->
+<tr hx-get="/api/users?page={{ .NextPage }}" hx-trigger="revealed" hx-swap="outerHTML" class="htmx-indicator">
+  <td colspan="4">
+    <span class="loading loading-infinity loading-lg block text-center mx-auto"></span>
+  </td>
+</tr>
+{{ end }}
+
+{{ end }}

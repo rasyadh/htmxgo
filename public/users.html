@@ -1,0 +1,44 @@
+{{ define "users" }}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX GO</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.9"
+      integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.4.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+  <body>
+    <!-- Get the navbar component and provide the active link -->
+    <div
+      hx-get="/api/navbar?active-link=users"
+      hx-trigger="load"
+      hx-target="this"
+      hx-swap="outerHTML"
+    ></div>
+
+    <div class="container p-4">
+      <h1 class="text-xl p-4">User Data</h1>
+
+      <!-- Lazy load table and load more -->
+      <div class="w-full" hx-get="/api/users" hx-trigger="load">
+        <span
+          class="p-5 loading loading-spinner loading-lg block text-center mx-auto htmx-indicator"
+        ></span>
+      </div>
+    </div>
+  </body>
+</html>
+
+{{ end }}

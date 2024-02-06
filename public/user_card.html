@@ -1,0 +1,17 @@
+{{ define "user_card" }}
+
+<!-- 1. Attribute inheritance, (target and swap) https://htmx.org/docs/#inheritance -->
+<!-- 2. Since button has onclick event we also don't need to use hx-trigger -->
+<!-- 3. Get the response and update the element with the response -->
+<div class="bg-neutral p-4 rounded-lg" hx-target="this" hx-swap="outerHTML">
+  <ol>
+    <li>Name: {{ .Name }}</li>
+    <li>Phone: {{ .Phone }}</li>
+    <li>Email: {{ .Email }}</li>
+  </ol>
+  <button class="btn btn-secondary btn-sm mt-3" hx-get="/api/user/edit">
+    Edit
+  </button>
+</div>
+
+{{ end }}

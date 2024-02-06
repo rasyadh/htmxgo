@@ -1,0 +1,85 @@
+{{ define "index" }}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX GO</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.9"
+      integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.4.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+  <body>
+    <!-- ?. this can be put into a component -->
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <a href="{{ .Title.Link }}" class="btn btn-ghost text-xl"
+          >{{ .Title.Name }}</a
+        >
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          {{ range $menu := .Menus }}
+          <li>
+            <a href="{{ $menu.Link }}">{{ $menu.Name }}</a>
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+
+    <div class="container p-4">
+      <div class="flex flex-row gap-x-3">
+        <!-- Go template render -->
+        <div class="p-3">{{ template "user_image" . }}</div>
+
+        <!-- Set the response of AJAX request to element -->
+        <!-- 1. hx-target id https://htmx.org/attributes/hx-target/ -->
+        <!-- 2. hx-trigger load https://htmx.org/attributes/hx-trigger/ -->
+        <!-- 3. hx-get will issue GET request https://htmx.org/attributes/hx-get/ -->
+        <div
+          hx-get="/api/username"
+          hx-trigger="load delay:3s"
+          hx-target="#username"
+        ></div>
+
+        <div class="flex flex-col">
+          <!-- Go template render -->
+          <h1 class="text-xl font-bold">{{ .Greeting }}</h1>
+          <!-- 4. The target id, innerHTML of this element will be updated with the response -->
+          <p class="text-lg" id="username">User.</p>
+        </div>
+      </div>
+
+      <div class="px-3 my-2">
+        <!-- Swapping the button with the response from AJAX request -->
+        <!-- 5. No need to set hx-target since the this element is the target -->
+        <!-- 6. hx-swap innerHTML https://htmx.org/attributes/hx-swap/ -->
+        <!-- 7. hx-trigger click -->
+        <!-- 8. hx-get request -->
+        <!-- 9. This element will be swapped by the response -->
+        <!-- ?. Try change hx-swap with outerHTML -->
+        <button
+          class="btn btn-primary btn-sm"
+          hx-trigger="click"
+          hx-get="/api/user"
+          hx-swap="outerHTML"
+        >
+          Get User
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
+
+{{ end }}

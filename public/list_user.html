@@ -1,0 +1,19 @@
+{{ define "list_user" }}
+
+<form>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ template "row_user" . }}
+    </tbody>
+  </table>
+</form>
+
+{{ end }}

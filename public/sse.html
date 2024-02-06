@@ -1,0 +1,69 @@
+{{ define "sse" }}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX GO</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.9"
+      integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.4.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+  <body>
+    <div
+      hx-get="/api/navbar?active-link=sse"
+      hx-trigger="load"
+      hx-target="this"
+      hx-swap="outerHTML"
+    ></div>
+
+    <div class="container p-4">
+      <div class="flex flex-col w-full border-opacity-50">
+        <!-- HTMX Pooling -->
+        <!-- 1. hx-trigger set to be trigger every 5s -->
+        <!-- 2. hx-get will issue the request -->
+        <!-- 3. set the response to the target -->
+        <div class="grid card bg-base-300 rounded-box place-items-center p-3">
+          <p class="text-lg font-bold mb-2">Pooling every 5s</p>
+          <div
+            hx-get="/api/pool-random"
+            hx-trigger="every 5s"
+            hx-target="#pool"
+          >
+            <p class="text-lg" id="pool">
+              Contents of this box will be updated by pooling the fetch call
+              every 5s
+            </p>
+          </div>
+        </div>
+
+        <div class="divider">OR</div>
+
+        <!-- HTMX Server side event -->
+        <!-- 1. using the extension https://htmx.org/extensions/server-sent-events/ or use the hx-sse attribute (will be migrated) -->
+        <!-- 2. connect to the url of the SSE server -->
+        <!-- 3. swap the message into the DOM -->
+        <div class="grid card bg-base-300 rounded-box place-items-center p-3">
+          <p class="text-lg font-bold mb-2">Server Side Event</p>
+          <div hx-ext="sse" sse-connect="/sse/events" sse-swap="message">
+            Contents of this box will be updated in real time with every SSE
+            message received from server.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+{{ end }}

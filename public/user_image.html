@@ -1,0 +1,15 @@
+{{ define "user_image" }}
+
+<!-- Notice that the file is html but we don't need declare the html tag -->
+<!-- since the HTMX will only update the spesific element in the DOM -->
+<div class="avatar transition ease-in-out duration-500 delay-300">
+  <div
+    class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+  >
+    <img
+      src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+    />
+  </div>
+</div>
+
+{{ end }}
